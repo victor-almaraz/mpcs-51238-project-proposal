@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Final Project: proposal</title>
-<meta name="description" content="Final Project: a Linux-first workstation for acousmatic, aleatory and automatic music.">
+<meta name="description" content="Final Project: a Linux-first workstation for acousmatic, aleatory, and automatic music.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -112,12 +112,6 @@ code { font-family: var(--font-mono); font-size: 0.875em; }
   .hero .wrap { grid-template-columns: 1fr 1.15fr; gap: 3.5rem; padding-top: 6rem; padding-bottom: 6rem; }
 }
 
-/* Feature list: the five items */
-.items { list-style: none; padding: 0; margin: 0; border-left: 1px solid var(--line); margin-left: 0.3rem; }
-.items li { position: relative; padding: 0.25rem 0 0 1.75rem; }
-.items li + li { margin-top: 1.5rem; }
-.items li::before { content: ""; position: absolute; left: -5px; top: 0.8rem; width: 9px; height: 9px; border-radius: 50%; background: var(--bg); border: 2px solid var(--fg); }
-.items strong { display: block; }
 
 /* Quotes */
 blockquote { margin: 0; border-left: 2px solid var(--fg); padding: 0.25rem 0 0.25rem 1.5rem; }
@@ -141,7 +135,7 @@ tr.milestone td { font-weight: 500; }
 .criterion { border: 1px solid var(--line); border-radius: 4px; padding: 1.25rem 1.5rem; }
 .criterion dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.375rem 1.5rem; margin: 1rem 0 0; font-size: 0.9375rem; }
 .criterion dt { font-weight: 500; }
-.criterion dd { margin: 0; font-family: var(--font-mono); font-size: 0.875rem; }
+.criterion dd { margin: 0; }
 .criterion > p { margin: 0; }
 .criterion + .criterion { margin-top: 1rem; }
 
@@ -166,7 +160,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; padding-top: 
       <a class="btn" href="#focus">Focus</a>
       <a class="btn" href="#roadmap">Roadmap</a>
       <a class="btn" href="#stack">Stack</a>
-      <a class="btn" href="#scope">Out of Scope</a>
+      <a class="btn" href="#scope">Out of scope</a>
     </nav>
   </div>
 </header>
@@ -177,8 +171,8 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; padding-top: 
     <div class="wrap">
       <div>
         <h1 id="title">Final Project</h1>
-        <p class="lead">A Linux-first workstation for acousmatic, aleatory and automatic music.</p>
-        <p class="lead">Pieces are written in a Lisp dialect. A script connects sources such as MIDI, OSC and live data to sinks such as audio, visuals and external programs, through instruments, effects and mappers. Any source can drive any sink. Scripts compile to an intermediate representation (IR) that a native C++ engine plays. A web directory lists live data APIs for use in pieces.</p>
+        <p class="lead">A Linux-first workstation for acousmatic, aleatory, and automatic music.</p>
+        <p class="lead">Pieces are written in a Lisp dialect and run on a native C++ engine. The engine is agnostic about I/O: MIDI, OSC, web APIs, serial devices, and scripts can all feed it, and it can send to audio, visuals, MIDI, OSC, web APIs, and serial devices. A companion website lists live data APIs that pieces can use.</p>
         <nav class="actions" aria-label="Jump to">
           <a class="btn btn-primary" href="#roadmap">Roadmap</a>
           <a class="btn btn-secondary" href="https://github.com/victor-almaraz/mpcs-51238-assignment-5">Assignment 5 Repository</a>
@@ -244,7 +238,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; padding-top: 
           <line x1="590" y1="72" x2="618" y2="100" marker-end="url(#arrow)"/>
           <line x1="590" y1="224" x2="618" y2="224" marker-end="url(#arrow)"/>
         </svg>
-        <figcaption>The interpreter runs outside the audio thread. Compiled graphs reach the engine through a lock-free queue.</figcaption>
+        <figcaption>Scripts are interpreted off the audio thread. The engine only sees the compiled graph, which it picks up from a lock-free queue.</figcaption>
       </figure>
     </div>
   </section>
@@ -257,16 +251,10 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; padding-top: 
         <h2 id="problem">Problem</h2>
       </div>
       <div class="prose">
-        <p>The author works on Linux. Linux audio tooling has gaps.</p>
-        <p>REAPER runs natively. Native Instruments, Spitfire Audio and Cycling '74 Max do not support Linux, and run only through unsupported compatibility layers such as Wine and yabridge. The open-source alternatives cover parts of the need:</p>
-        <ul>
-          <li><strong>Pure Data and Max</strong> are visual languages. Large patches are hard to read and maintain.</li>
-          <li><strong>SuperCollider</strong> supports synthesis and algorithmic composition. Stable releases on Linux require a source build or the Flatpak build. Graphics are limited to GUI widgets and 2D vector drawing.</li>
-          <li><strong>TidalCycles</strong> is a live coding environment for patterns. It depends on SuperCollider for synthesis.</li>
-        </ul>
-        <p>Four of the six assignments in this course focused on audio, to test what the browser, a functionally universal desktop platform, can do.</p>
-        <p>Those experiments reached performance and feature limits imposed by the browser. Assignment 5 caps each piece at four reverbs. Pieces of about 300 lines produce audio artifacts when the browser competes with other processes for CPU time.</p>
-        <p>The final project is a native Linux application for that work. It targets pieces that are written once and then run on their own, driven by rules, chance and live data, with sound and visuals in the same script.</p>
+        <p>I'm on Linux, and while audio tooling there is improving, there are still gaps. REAPER runs natively, but Native Instruments, Spitfire Audio, and Max don't support Linux. They run only through Wine or yabridge, which none of those vendors support.</p>
+        <p>The open-source options each cover part of what I want. Pure Data and Max are visual languages, and patches get hard to work with past a certain size. SuperCollider handles synthesis and algorithmic composition, but on Linux the stable release has to be built from source or installed as a Flatpak, and its graphics stop at GUI widgets and 2D drawing. TidalCycles is built for live coding and runs on top of SuperCollider.</p>
+        <p>Three of the six assignments in this course focused on audio for this reason: I wanted to see what could be done in the browser, which is functionally a universal desktop platform. Those experiments hit performance and feature walls. Assignment 5 caps a piece at four reverbs, and a piece of about 300 lines produces audio artifacts when the browser has to compete with other processes for CPU time.</p>
+        <p>The final project moves this work to a native app. It's aimed at pieces that are written once and left to run, driven by rules, chance, and live data, with sound and visuals in the same script.</p>
       </div>
     </div>
   </section>
@@ -279,20 +267,10 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; padding-top: 
         <h2 id="what">Features</h2>
       </div>
       <div class="prose">
-        <p>A piece is a graph of four kinds of element:</p>
-        <ul>
-          <li><strong>Sources</strong> produce data: MIDI, OSC, web data, serial devices such as microcontrollers, and scripts that generate triggers or synthetic data.</li>
-          <li><strong>Sinks</strong> receive data: audio, MIDI, OSC, web data such as another program's API, serial devices, and visuals.</li>
-          <li><strong>Modifiers</strong> transform data: instruments, effects, and mappers.</li>
-          <li><strong>Pipes</strong> connect elements and carry audio-rate, control-rate, or event data.</li>
-        </ul>
-        <p>The engine treats every source and sink the same way. A MIDI controller can drive a web API, a serial sensor can drive a reverb, and a script can drive an external program over OSC.</p>
-        <ul class="items">
-          <li><strong>Instruments, effects and scripts</strong>Defined in code and reused across pieces.</li>
-          <li><strong>Lisp dialect</strong>A custom Lisp dialect with CLOS-style objects: <code>defclass</code>, <code>defmethod</code> and inheritance. Scripts compile to a validated IR.</li>
-          <li><strong>Visual output</strong>Visual layers driven by the same sources as the sound.</li>
-          <li><strong>Data directory</strong>A public web directory of live data APIs. Each entry lists the endpoint, key requirement, fields and units, refresh rate, rate limits, and a binding snippet for a piece. Signed-in users save entries. The native app retrieves a user's saved entries with a personal token, and fetches each source directly.</li>
-        </ul>
+        <p>Everything in a piece is a source, a sink, a modifier, or a pipe. Sources produce data: MIDI, OSC, web APIs, serial devices such as microcontrollers, and scripts that generate triggers or synthetic data. Sinks receive it: audio, visuals, MIDI, OSC, web APIs, and serial devices. Modifiers, such as instruments, effects, and mappers, take data in and change it. Pipes connect everything and carry audio, control, or event data, modeled on SuperCollider's buses.</p>
+        <p>Because sources and sinks are handled the same way, a MIDI controller can drive a web API, and a microcontroller can drive a reverb.</p>
+        <p>Instruments, effects, and scripts are written in code and reused across pieces. The language is a custom Lisp dialect with CLOS-style objects (<code>defclass</code>, <code>defmethod</code>, inheritance), and scripts compile to a validated IR. Visual layers take the same inputs as the sound.</p>
+        <p>The companion website is a directory of live data APIs. Each entry lists the endpoint, whether it needs a key, its fields and units, its refresh rate and rate limits, and a snippet to paste into a piece. Anyone can browse it. Signing in lets you save entries, and the app pulls your saved list with a personal token. The app fetches data from each API directly.</p>
       </div>
     </div>
   </section>
@@ -305,8 +283,8 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; padding-top: 
         <h2 id="users">Users</h2>
       </div>
       <div class="prose">
-        <p>Musicians who work on Linux, generative and installation artists, and users of Max and SuperCollider.</p>
-        <p><strong>Interviews:</strong> not completed, due to time constraints. Three written interviews are scheduled for November 4–9. Their findings inform the language specification.</p>
+        <p>Musicians on Linux, generative and installation artists, and people who use Max or SuperCollider.</p>
+        <p>I haven't done the interviews yet because of time constraints. Three written interviews are planned for November 4–9, early enough to shape the language spec.</p>
       </div>
     </div>
   </section>
@@ -316,16 +294,11 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; padding-top: 
       <div class="rule-graduated" aria-hidden="true"></div>
       <div class="band-head">
         <p class="band-num tabular" aria-hidden="true">04</p>
-        <h2 id="focus">Focus: Systems</h2>
+        <h2 id="focus">Focus</h2>
       </div>
       <div class="prose">
-        <p>The project's core is architecture:</p>
-        <ul>
-          <li>A real-time audio engine. The audio thread performs no allocation, locking or file I/O.</li>
-          <li>A language interpreter that compiles scripts to a validated IR. The IR is the contract between the language and the engine.</li>
-          <li>Source and sink bindings for MIDI, OSC, web data and serial devices, with mappers that run outside the audio thread.</li>
-        </ul>
-        <p>The focus matches the project's learning goals: DSP and language design.</p>
+        <p>Systems. Most of the work is architecture: a real-time audio engine that never allocates, locks, or touches files on the audio thread; an interpreter that compiles scripts to a validated IR, which is the contract between the language and the engine; and bindings for MIDI, OSC, web data, and serial devices, with mappers that run off the audio thread.</p>
+        <p>It's also what I want to learn: DSP and language design.</p>
       </div>
     </div>
   </section>
@@ -342,30 +315,30 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; padding-top: 
           <table>
             <thead><tr><th scope="col">Dates</th><th scope="col">Work</th></tr></thead>
             <tbody>
-              <tr><td class="tabular">Nov 4–9</td><td><ul class="cell-list"><li>Language specification: syntax, object model, binding and mapper forms, IR schema</li><li>Assignment 5 starter pieces and the heavy piece, written in the Lisp dialect</li><li>Written by hand during Assignment 6</li><li>Three written user interviews</li></ul></td></tr>
-              <tr><td class="tabular">Nov 10–17</td><td><ul class="cell-list"><li>Engine, single-threaded: audio thread, graph swap, deadline counter, core DSP and effects</li><li>Interpreter: reader, evaluator and compiler, built in parallel with the engine</li><li>MIDI and OSC sources</li><li>One visual layer</li></ul></td></tr>
-              <tr class="milestone"><td class="tabular">Nov 17</td><td><ul class="cell-list"><li>v1: the correctness criterion passes</li><li>A local build plays a starter piece</li></ul></td></tr>
-              <tr><td class="tabular">Nov 17–24</td><td><ul class="cell-list"><li>Web data and serial sources and sinks, with mappers</li><li>MIDI and OSC sinks</li><li>Data directory on Vercel: entries, sign-in, saved entries and personal tokens</li><li>A first-time user signs up, saves an entry and uses its snippet in a piece</li></ul></td></tr>
-              <tr><td class="tabular">Nov 24–Dec 1</td><td><ul class="cell-list"><li>Multithreaded engine: a real-time worker pool that processes independent instrument chains in parallel</li><li>Performance work against the heavy piece</li><li>Remaining visual layers</li><li>AppImage release</li></ul></td></tr>
-              <tr class="milestone"><td class="tabular">Dec 1</td><td><ul class="cell-list"><li>v2, at the project fair: the performance criterion passes</li></ul></td></tr>
+              <tr><td class="tabular">Nov 4–9</td><td><ul class="cell-list"><li>Language spec, written by hand alongside Assignment 6: syntax, object model, binding and mapper forms, IR schema</li><li>Assignment 5 starter pieces and the heavy piece, rewritten in the Lisp dialect</li><li>Three written user interviews</li></ul></td></tr>
+              <tr><td class="tabular">Nov 10–17</td><td><ul class="cell-list"><li>Engine, single-threaded: audio thread, graph swap, deadline counter, core DSP, and effects</li><li>Interpreter: reader, evaluator, and compiler, built in parallel with the engine</li><li>MIDI and OSC sources</li><li>One visual layer</li></ul></td></tr>
+              <tr class="milestone"><td class="tabular">Nov 17</td><td><ul class="cell-list"><li>v1: the core passes the correctness checks below</li><li>A local build plays a starter piece</li></ul></td></tr>
+              <tr><td class="tabular">Nov 17–24</td><td><ul class="cell-list"><li>Web data and serial sources and sinks, with mappers</li><li>MIDI and OSC sinks</li><li>Directory site on Vercel, with sign-in, saved entries, and personal tokens</li><li>End to end: sign up, save an entry, use its snippet in a piece</li></ul></td></tr>
+              <tr><td class="tabular">Nov 24–Dec 1</td><td><ul class="cell-list"><li>Multithreaded engine: a worker pool that runs instrument chains in parallel</li><li>Performance tuning against the heavy piece</li><li>Remaining visual layers</li><li>AppImage release</li></ul></td></tr>
+              <tr class="milestone"><td class="tabular">Dec 1</td><td><ul class="cell-list"><li>v2 at the project fair: the heavy piece passes the performance test below</li></ul></td></tr>
             </tbody>
           </table>
         </div>
         <div class="criterion">
-          <p><strong>v1 correctness criterion:</strong> the core behaves as specified.</p>
+          <p><strong>v1 is done when the core works correctly:</strong></p>
           <dl>
-            <dt>Tests</dt><dd>Catch2 suite passes: reader, evaluator, compiler, IR validation, DSP units</dd>
-            <dt>Pieces</dt><dd>Each Assignment 5 starter piece, written in the Lisp dialect, compiles to valid IR and plays</dd>
-            <dt>Rendering</dt><dd>Offline renders are identical for identical IR and seed</dd>
-            <dt>Memory</dt><dd>0 Valgrind errors and 0 leaks across the test suite</dd>
+            <dt>Tests</dt><dd>The Catch2 suite passes for the reader, evaluator, compiler, IR validation, and DSP</dd>
+            <dt>Pieces</dt><dd>Every Assignment 5 starter piece, rewritten in Lisp, compiles to valid IR and plays</dd>
+            <dt>Rendering</dt><dd>The same IR and seed always render the same output offline</dd>
+            <dt>Memory</dt><dd>Valgrind reports no errors or leaks on the test suite</dd>
           </dl>
         </div>
         <div class="criterion">
-          <p><strong>v2 performance criterion:</strong> the heavy piece runs with no missed deadlines and no xruns.</p>
+          <p><strong>v2 is done when the heavy piece runs without missed deadlines or xruns:</strong></p>
           <dl>
-            <dt>Piece</dt><dd>8 instruments × 2 effects, 8 voices each (64 voices)</dd>
+            <dt>Piece</dt><dd>8 instruments with 2 effects each, 8 voices per instrument (64 voices)</dd>
             <dt>Settings</dt><dd>256 samples at 48 kHz, 30 minutes</dd>
-            <dt>Pass</dt><dd>0 missed deadlines, 0 xruns in pw-top</dd>
+            <dt>Pass</dt><dd>No missed deadlines and no xruns in <code>pw-top</code></dd>
           </dl>
         </div>
       </div>
@@ -385,19 +358,19 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; padding-top: 
           <table>
             <thead><tr><th scope="col">Tool</th><th scope="col">Role</th></tr></thead>
             <tbody>
-              <tr><td>C++ and JUCE</td><td>Native build with no web runtime. JUCE provides ALSA and JACK audio devices, MIDI, OSC, UI, an OpenGL context, and LV2 and VST3 plugin export. JUCE is available under AGPLv3, which fits an open-source, non-commercial project.</td></tr>
-              <tr><td>Lisp dialect</td><td>S-expressions map directly onto the IR tree.</td></tr>
-              <tr><td>Catch2</td><td>Unit and integration tests for the interpreter, compiler, IR validation and DSP, run through CTest. BSL-1.0 licence.</td></tr>
-              <tr><td>Valgrind</td><td>Memcheck over the test suite and offline renders, for leaks and invalid memory access. Too slow for real-time runs.</td></tr>
-              <tr><td>CMake</td><td>Build system, supported by JUCE.</td></tr>
-              <tr><td>PipeWire, <code>pw-top</code></td><td>Audio server on most Linux desktops. The <code>ERR</code> column of <code>pw-top</code> reports xruns for the performance criterion.</td></tr>
-              <tr><td><code>gh</code></td><td>GitHub CLI for the repository and releases.</td></tr>
-              <tr><td>Doxygen, Sphinx, Breathe</td><td>C++ API reference, user guide and language reference. Breathe imports Doxygen output into Sphinx.</td></tr>
-              <tr><td>Vercel</td><td>Hosting for the data directory and this page.</td></tr>
-              <tr><td>Supabase</td><td>Postgres for directory entries, saved entries and hashed tokens, with row-level security. Free projects pause after a week without database activity; a daily scheduled query keeps the project active.</td></tr>
+              <tr><td>C++ and JUCE</td><td>Native, with no web runtime. JUCE covers ALSA and JACK audio, MIDI, OSC, the UI, an OpenGL context, and plugin export later on. Its AGPLv3 option fits an open-source, non-commercial project.</td></tr>
+              <tr><td>Lisp dialect</td><td>S-expressions map almost directly onto the IR tree.</td></tr>
+              <tr><td>Catch2</td><td>Tests for the interpreter, compiler, IR validation, and DSP, run through CTest.</td></tr>
+              <tr><td>Valgrind</td><td>Memcheck on the test suite and offline renders, to catch leaks and bad memory access. Too slow for real-time runs.</td></tr>
+              <tr><td>CMake</td><td>Build system. JUCE supports it directly.</td></tr>
+              <tr><td>PipeWire</td><td>The audio server on most Linux desktops. The <code>ERR</code> column in <code>pw-top</code> counts xruns for the performance test.</td></tr>
+              <tr><td>GitHub CLI</td><td><code>gh</code> for the repository and releases.</td></tr>
+              <tr><td>Doxygen, Sphinx, Breathe</td><td>API reference from the C++ source, plus the user guide and language reference. Breathe pulls the Doxygen output into Sphinx.</td></tr>
+              <tr><td>Vercel</td><td>Hosts the directory and this page.</td></tr>
+              <tr><td>Supabase</td><td>Postgres for directory entries, saved entries, and hashed tokens, with row-level security. Free projects pause after a week without activity, so a daily scheduled query keeps it running.</td></tr>
               <tr><td>Clerk</td><td>Sign-in for the directory.</td></tr>
-              <tr><td>Claude Code</td><td>Implementation of the engine, tooling and directory against the language specification.</td></tr>
-              <tr><td>Supabase MCP</td><td>Schema, migrations and access rules for the directory.</td></tr>
+              <tr><td>Claude Code</td><td>Builds the engine, tooling, and directory against the language spec.</td></tr>
+              <tr><td>Supabase MCP</td><td>Schema, migrations, and access rules for the directory.</td></tr>
             </tbody>
           </table>
         </div>
