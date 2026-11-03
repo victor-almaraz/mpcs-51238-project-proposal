@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Final Project: proposal</title>
+<meta name="description" content="Final Project: a Linux-first workstation for acousmatic, aleatory and automatic music.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Tokens from Assignment 5 (app/globals.css): black and white only, 1 px lines, hover inverts.
+   Colour appears only in code, in the syntax hues. */
+:root {
+  --bg: #ffffff;
+  --fg: #000000;
+  --line: #000000;
+  --syn-keyword: #a300a3;
+  --syn-string: #007a00;
+  --syn-number: #806600;
+  --syn-function: #00707a;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --graduated:
+    linear-gradient(var(--line), var(--line)) 0 0 / 100% 1px no-repeat,
+    repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px 40px) 0 1px / 100% 10px no-repeat,
+    repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px 8px) 0 1px / 100% 4px no-repeat;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #000000;
+    --fg: #ffffff;
+    --line: #ffffff;
+    --syn-keyword: #ff5fff;
+    --syn-string: #5fff5f;
+    --syn-number: #ffff5f;
+    --syn-function: #5fffff;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+:focus-visible { outline: 2px solid var(--fg); outline-offset: 1px; }
+::selection { background: var(--fg); color: var(--bg); }
+a { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; }
+code { font-family: var(--font-mono); font-size: 0.875em; }
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* Site header */
+.site-header { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid var(--line); background: var(--bg); }
+.site-header .inner { display: flex; flex-wrap: wrap; align-items: center; gap: 0 1rem; min-height: 3rem; padding: 0 1rem; }
+.brand { display: flex; align-items: center; gap: 0.5rem; height: 3rem; font-weight: 600; font-size: 0.9375rem; letter-spacing: -0.01em; text-decoration: none; }
+.site-nav { display: flex; gap: 0.25rem; order: 3; width: 100%; margin: 0 -0.75rem; padding-bottom: 0.5rem; overflow-x: auto; }
+.btn { display: inline-flex; align-items: center; height: 2rem; padding: 0 0.75rem; border-radius: 4px; font-size: 0.875rem; white-space: nowrap; text-decoration: none; border: 1px solid transparent; }
+.btn:hover { background: var(--fg); color: var(--bg); }
+.btn-secondary { border-color: var(--line); }
+.btn-primary { border-color: var(--fg); background: var(--fg); color: var(--bg); font-weight: 500; }
+.btn-primary:hover { background: var(--bg); color: var(--fg); }
+.spacer { flex: 1; }
+@media (min-width: 640px) {
+  .site-header .inner { flex-wrap: nowrap; padding: 0 1.5rem; }
+  .site-nav { order: 0; width: auto; margin: 0; padding: 0; }
+}
+
+/* Bands: heading in a narrow left column on wide windows, body on the right */
+.wrap { max-width: 72rem; margin: 0 auto; padding: 0 1rem; }
+@media (min-width: 640px) { .wrap { padding: 0 1.5rem; } }
+.band .wrap { display: grid; gap: 1.5rem 3rem; padding-top: 4rem; padding-bottom: 4rem; }
+.rule-graduated { height: 11px; background: var(--graduated); }
+.band-num { margin: 0; font-family: var(--font-mono); font-size: 0.75rem; }
+.band h2 { margin: 0.5rem 0 0; font-size: 1.5rem; line-height: 1.2; font-weight: 600; letter-spacing: -0.02em; text-wrap: balance; scroll-margin-top: 4rem; }
+@media (min-width: 640px) { .band h2 { font-size: 1.875rem; } }
+@media (min-width: 1024px) {
+  .band .wrap { grid-template-columns: 15rem 1fr; padding-top: 6rem; padding-bottom: 6rem; }
+  .band .rule-graduated { grid-column: span 2; }
+  .band-head { position: sticky; top: 5rem; align-self: start; }
+}
+.prose { max-width: 42rem; font-size: 1.0625rem; line-height: 1.75; min-width: 0; }
+.prose > * { margin: 0; }
+.prose > * + * { margin-top: 1.25rem; }
+.prose strong { font-weight: 600; }
+.prose ul { padding-left: 1.5rem; }
+.prose li + li { margin-top: 0.375rem; }
+
+/* Hero */
+.hero .wrap { display: grid; gap: 2.5rem; padding-top: 3.5rem; padding-bottom: 4rem; align-items: center; }
+.hero h1 { margin: 0; font-size: 3rem; line-height: 1.05; font-weight: 600; letter-spacing: -0.03em; }
+@media (min-width: 640px) { .hero h1 { font-size: 3.75rem; } }
+.lead { margin: 1.75rem 0 0; font-size: 1.1875rem; line-height: 1.65; max-width: 36rem; }
+.hero .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.75rem; }
+.hero figure { margin: 0; }
+.hero figcaption { margin-top: 0.5rem; font-size: 0.75rem; }
+.diagram { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 4px; }
+.diagram text { fill: var(--fg); font-family: var(--font-sans); }
+.diagram .sub { font-family: var(--font-mono); font-size: 10px; }
+.diagram rect { fill: var(--bg); stroke: var(--fg); }
+.diagram .rt { stroke-dasharray: 3 3; fill: none; }
+.diagram path, .diagram line { stroke: var(--fg); fill: none; }
+.diagram marker path { fill: var(--fg); stroke: none; }
+@media (min-width: 1024px) {
+  .hero .wrap { grid-template-columns: 1fr 1.15fr; gap: 3.5rem; padding-top: 6rem; padding-bottom: 6rem; }
+}
+
+/* Feature list: the five items */
+.items { list-style: none; padding: 0; margin: 0; border-left: 1px solid var(--line); margin-left: 0.3rem; }
+.items li { position: relative; padding: 0.25rem 0 0 1.75rem; }
+.items li + li { margin-top: 1.5rem; }
+.items li::before { content: ""; position: absolute; left: -5px; top: 0.8rem; width: 9px; height: 9px; border-radius: 50%; background: var(--bg); border: 2px solid var(--fg); }
+.items strong { display: block; }
+
+/* Quotes */
+blockquote { margin: 0; border-left: 2px solid var(--fg); padding: 0.25rem 0 0.25rem 1.5rem; }
+blockquote p { margin: 0; }
+blockquote p:first-child { font-size: 1.25rem; line-height: 1.5; letter-spacing: -0.01em; text-wrap: balance; }
+blockquote p + p { margin-top: 0.5rem; font-size: 0.875rem; }
+
+/* Tables */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; line-height: 1.5; }
+th, td { text-align: left; vertical-align: top; padding: 0.625rem 0.75rem; border-bottom: 1px solid var(--line); }
+th:first-child, td:first-child { padding-left: 0; }
+th:last-child, td:last-child { padding-right: 0; }
+thead th { font-size: 0.75rem; font-weight: 500; }
+td:first-child { white-space: nowrap; }
+tr.milestone td { font-weight: 500; }
+.cell-list { margin: 0; padding-left: 1.125rem; }
+.cell-list li + li { margin-top: 0.25rem; }
+
+/* Criterion */
+.criterion { border: 1px solid var(--line); border-radius: 4px; padding: 1.25rem 1.5rem; }
+.criterion dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.375rem 1.5rem; margin: 1rem 0 0; font-size: 0.9375rem; }
+.criterion dt { font-weight: 500; }
+.criterion dd { margin: 0; font-family: var(--font-mono); font-size: 0.875rem; }
+.criterion > p { margin: 0; }
+.criterion + .criterion { margin-top: 1rem; }
+
+
+footer { border-top: 1px solid var(--line); font-size: 0.75rem; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; padding-top: 0.75rem; padding-bottom: 0.75rem; }
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="#top">
+      Final Project
+    </a>
+    <nav class="site-nav" aria-label="Sections">
+      <a class="btn" href="#problem">Problem</a>
+      <a class="btn" href="#what">Features</a>
+      <a class="btn" href="#users">Users</a>
+      <a class="btn" href="#focus">Focus</a>
+      <a class="btn" href="#roadmap">Roadmap</a>
+      <a class="btn" href="#stack">Stack</a>
+      <a class="btn" href="#scope">Out of Scope</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-labelledby="title">
+    <div class="wrap">
+      <div>
+        <h1 id="title">Final Project</h1>
+        <p class="lead">A Linux-first workstation for acousmatic, aleatory and automatic music.</p>
+        <p class="lead">Pieces are written in a Lisp dialect. A script connects sources such as MIDI, OSC and live data to sinks such as audio, visuals and external programs, through instruments, effects and mappers. Any source can drive any sink. Scripts compile to an intermediate representation (IR) that a native C++ engine plays. A web directory lists live data APIs for use in pieces.</p>
+        <nav class="actions" aria-label="Jump to">
+          <a class="btn btn-primary" href="#roadmap">Roadmap</a>
+          <a class="btn btn-secondary" href="https://github.com/victor-almaraz/mpcs-51238-assignment-5">Assignment 5 Repository</a>
+        </nav>
+      </div>
+      <figure>
+        <svg class="diagram" viewBox="0 0 720 270" role="img" aria-labelledby="diagram-title diagram-desc">
+          <title id="diagram-title">Architecture</title>
+          <desc id="diagram-desc">A Lisp script goes through the interpreter and becomes a validated IR. The IR drives the audio engine on the real-time thread and the visual renderer. Sources such as MIDI, OSC and data pass through bindings and mappers to both. The engine drives audio, MIDI and OSC sinks; the renderer drives the screen.</desc>
+          <defs>
+            <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L8 4 L0 8 z"/>
+            </marker>
+          </defs>
+          <rect x="10" y="40" width="110" height="48" rx="4"/>
+          <text x="22" y="61" font-size="13" font-weight="600">Script</text>
+          <text x="22" y="77" class="sub">.lisp files</text>
+
+          <rect x="150" y="40" width="130" height="48" rx="4"/>
+          <text x="162" y="61" font-size="13" font-weight="600">Interpreter</text>
+          <text x="162" y="77" class="sub">parse, compile</text>
+
+          <rect x="310" y="40" width="100" height="48" rx="4"/>
+          <text x="322" y="61" font-size="13" font-weight="600">IR</text>
+          <text x="322" y="77" class="sub">validated JSON</text>
+
+          <rect x="150" y="200" width="130" height="48" rx="4"/>
+          <text x="162" y="221" font-size="13" font-weight="600">Sources</text>
+          <text x="162" y="237" class="sub">MIDI, OSC, data</text>
+
+          <rect x="310" y="200" width="100" height="48" rx="4"/>
+          <text x="322" y="221" font-size="13" font-weight="600">Bindings</text>
+          <text x="322" y="237" class="sub">custom mappers</text>
+
+          <rect x="448" y="28" width="154" height="72" rx="6" class="rt"/>
+          <text x="456" y="22" class="sub">real-time thread</text>
+          <rect x="460" y="40" width="130" height="48" rx="4"/>
+          <text x="472" y="61" font-size="13" font-weight="600">Audio engine</text>
+          <text x="472" y="77" class="sub">voices, effects</text>
+
+          <rect x="460" y="200" width="130" height="48" rx="4"/>
+          <text x="472" y="221" font-size="13" font-weight="600">Visual renderer</text>
+          <text x="472" y="237" class="sub">OpenGL</text>
+
+          <rect x="620" y="18" width="90" height="28" rx="4"/>
+          <text x="632" y="36" font-size="12">Audio</text>
+          <rect x="620" y="52" width="90" height="28" rx="4"/>
+          <text x="632" y="70" font-size="12">MIDI out</text>
+          <rect x="620" y="86" width="90" height="28" rx="4"/>
+          <text x="632" y="104" font-size="12">OSC out</text>
+          <rect x="620" y="210" width="90" height="28" rx="4"/>
+          <text x="632" y="228" font-size="12">Screen</text>
+
+          <line x1="120" y1="64" x2="148" y2="64" marker-end="url(#arrow)"/>
+          <line x1="280" y1="64" x2="308" y2="64" marker-end="url(#arrow)"/>
+          <line x1="410" y1="64" x2="458" y2="64" marker-end="url(#arrow)"/>
+          <line x1="280" y1="224" x2="308" y2="224" marker-end="url(#arrow)"/>
+          <line x1="410" y1="224" x2="458" y2="224" marker-end="url(#arrow)"/>
+          <path d="M410 80 L460 208" marker-end="url(#arrow)"/>
+          <path d="M410 208 L460 80" marker-end="url(#arrow)"/>
+          <line x1="590" y1="58" x2="618" y2="32" marker-end="url(#arrow)"/>
+          <line x1="590" y1="64" x2="618" y2="66" marker-end="url(#arrow)"/>
+          <line x1="590" y1="72" x2="618" y2="100" marker-end="url(#arrow)"/>
+          <line x1="590" y1="224" x2="618" y2="224" marker-end="url(#arrow)"/>
+        </svg>
+        <figcaption>The interpreter runs outside the audio thread. Compiled graphs reach the engine through a lock-free queue.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="problem">
+    <div class="wrap">
+      <div class="rule-graduated" aria-hidden="true"></div>
+      <div class="band-head">
+        <p class="band-num tabular" aria-hidden="true">01</p>
+        <h2 id="problem">Problem</h2>
+      </div>
+      <div class="prose">
+        <p>The author works on Linux. Linux audio tooling has gaps.</p>
+        <p>REAPER runs natively. Native Instruments, Spitfire Audio and Cycling '74 Max do not support Linux, and run only through unsupported compatibility layers such as Wine and yabridge. The open-source alternatives cover parts of the need:</p>
+        <ul>
+          <li><strong>Pure Data and Max</strong> are visual languages. Large patches are hard to read and maintain.</li>
+          <li><strong>SuperCollider</strong> supports synthesis and algorithmic composition. Stable releases on Linux require a source build or the Flatpak build. Graphics are limited to GUI widgets and 2D vector drawing.</li>
+          <li><strong>TidalCycles</strong> is a live coding environment for patterns. It depends on SuperCollider for synthesis.</li>
+        </ul>
+        <p>Four of the six assignments in this course focused on audio, to test what the browser, a functionally universal desktop platform, can do.</p>
+        <p>Those experiments reached performance and feature limits imposed by the browser. Assignment 5 caps each piece at four reverbs. Pieces of about 300 lines produce audio artifacts when the browser competes with other processes for CPU time.</p>
+        <p>The final project is a native Linux application for that work. It targets pieces that are written once and then run on their own, driven by rules, chance and live data, with sound and visuals in the same script.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="what">
+    <div class="wrap">
+      <div class="rule-graduated" aria-hidden="true"></div>
+      <div class="band-head">
+        <p class="band-num tabular" aria-hidden="true">02</p>
+        <h2 id="what">Features</h2>
+      </div>
+      <div class="prose">
+        <p>A piece is a graph of four kinds of element:</p>
+        <ul>
+          <li><strong>Sources</strong> produce data: MIDI, OSC, web data, serial devices such as microcontrollers, and scripts that generate triggers or synthetic data.</li>
+          <li><strong>Sinks</strong> receive data: audio, MIDI, OSC, web data such as another program's API, serial devices, and visuals.</li>
+          <li><strong>Modifiers</strong> transform data: instruments, effects, and mappers.</li>
+          <li><strong>Pipes</strong> connect elements and carry audio-rate, control-rate, or event data.</li>
+        </ul>
+        <p>The engine treats every source and sink the same way. A MIDI controller can drive a web API, a serial sensor can drive a reverb, and a script can drive an external program over OSC.</p>
+        <ul class="items">
+          <li><strong>Instruments, effects and scripts</strong>Defined in code and reused across pieces.</li>
+          <li><strong>Lisp dialect</strong>A custom Lisp dialect with CLOS-style objects: <code>defclass</code>, <code>defmethod</code> and inheritance. Scripts compile to a validated IR.</li>
+          <li><strong>Visual output</strong>Visual layers driven by the same sources as the sound.</li>
+          <li><strong>Data directory</strong>A public web directory of live data APIs. Each entry lists the endpoint, key requirement, fields and units, refresh rate, rate limits, and a binding snippet for a piece. Signed-in users save entries. The native app retrieves a user's saved entries with a personal token, and fetches each source directly.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="users">
+    <div class="wrap">
+      <div class="rule-graduated" aria-hidden="true"></div>
+      <div class="band-head">
+        <p class="band-num tabular" aria-hidden="true">03</p>
+        <h2 id="users">Users</h2>
+      </div>
+      <div class="prose">
+        <p>Musicians who work on Linux, generative and installation artists, and users of Max and SuperCollider.</p>
+        <p><strong>Interviews:</strong> not completed, due to time constraints. Three written interviews are scheduled for November 4–9. Their findings inform the language specification.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="focus">
+    <div class="wrap">
+      <div class="rule-graduated" aria-hidden="true"></div>
+      <div class="band-head">
+        <p class="band-num tabular" aria-hidden="true">04</p>
+        <h2 id="focus">Focus: Systems</h2>
+      </div>
+      <div class="prose">
+        <p>The project's core is architecture:</p>
+        <ul>
+          <li>A real-time audio engine. The audio thread performs no allocation, locking or file I/O.</li>
+          <li>A language interpreter that compiles scripts to a validated IR. The IR is the contract between the language and the engine.</li>
+          <li>Source and sink bindings for MIDI, OSC, web data and serial devices, with mappers that run outside the audio thread.</li>
+        </ul>
+        <p>The focus matches the project's learning goals: DSP and language design.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="roadmap">
+    <div class="wrap">
+      <div class="rule-graduated" aria-hidden="true"></div>
+      <div class="band-head">
+        <p class="band-num tabular" aria-hidden="true">05</p>
+        <h2 id="roadmap">Roadmap</h2>
+      </div>
+      <div class="prose">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Dates</th><th scope="col">Work</th></tr></thead>
+            <tbody>
+              <tr><td class="tabular">Nov 4–9</td><td><ul class="cell-list"><li>Language specification: syntax, object model, binding and mapper forms, IR schema</li><li>Assignment 5 starter pieces and the heavy piece, written in the Lisp dialect</li><li>Written by hand during Assignment 6</li><li>Three written user interviews</li></ul></td></tr>
+              <tr><td class="tabular">Nov 10–17</td><td><ul class="cell-list"><li>Engine, single-threaded: audio thread, graph swap, deadline counter, core DSP and effects</li><li>Interpreter: reader, evaluator and compiler, built in parallel with the engine</li><li>MIDI and OSC sources</li><li>One visual layer</li></ul></td></tr>
+              <tr class="milestone"><td class="tabular">Nov 17</td><td><ul class="cell-list"><li>v1: the correctness criterion passes</li><li>A local build plays a starter piece</li></ul></td></tr>
+              <tr><td class="tabular">Nov 17–24</td><td><ul class="cell-list"><li>Web data and serial sources and sinks, with mappers</li><li>MIDI and OSC sinks</li><li>Data directory on Vercel: entries, sign-in, saved entries and personal tokens</li><li>A first-time user signs up, saves an entry and uses its snippet in a piece</li></ul></td></tr>
+              <tr><td class="tabular">Nov 24–Dec 1</td><td><ul class="cell-list"><li>Multithreaded engine: a real-time worker pool that processes independent instrument chains in parallel</li><li>Performance work against the heavy piece</li><li>Remaining visual layers</li><li>AppImage release</li></ul></td></tr>
+              <tr class="milestone"><td class="tabular">Dec 1</td><td><ul class="cell-list"><li>v2, at the project fair: the performance criterion passes</li></ul></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="criterion">
+          <p><strong>v1 correctness criterion:</strong> the core behaves as specified.</p>
+          <dl>
+            <dt>Tests</dt><dd>Catch2 suite passes: reader, evaluator, compiler, IR validation, DSP units</dd>
+            <dt>Pieces</dt><dd>Each Assignment 5 starter piece, written in the Lisp dialect, compiles to valid IR and plays</dd>
+            <dt>Rendering</dt><dd>Offline renders are identical for identical IR and seed</dd>
+            <dt>Memory</dt><dd>0 Valgrind errors and 0 leaks across the test suite</dd>
+          </dl>
+        </div>
+        <div class="criterion">
+          <p><strong>v2 performance criterion:</strong> the heavy piece runs with no missed deadlines and no xruns.</p>
+          <dl>
+            <dt>Piece</dt><dd>8 instruments × 2 effects, 8 voices each (64 voices)</dd>
+            <dt>Settings</dt><dd>256 samples at 48 kHz, 30 minutes</dd>
+            <dt>Pass</dt><dd>0 missed deadlines, 0 xruns in pw-top</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="band" aria-labelledby="stack">
+    <div class="wrap">
+      <div class="rule-graduated" aria-hidden="true"></div>
+      <div class="band-head">
+        <p class="band-num tabular" aria-hidden="true">06</p>
+        <h2 id="stack">Stack</h2>
+      </div>
+      <div class="prose">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Tool</th><th scope="col">Role</th></tr></thead>
+            <tbody>
+              <tr><td>C++ and JUCE</td><td>Native build with no web runtime. JUCE provides ALSA and JACK audio devices, MIDI, OSC, UI, an OpenGL context, and LV2 and VST3 plugin export. JUCE is available under AGPLv3, which fits an open-source, non-commercial project.</td></tr>
+              <tr><td>Lisp dialect</td><td>S-expressions map directly onto the IR tree.</td></tr>
+              <tr><td>Catch2</td><td>Unit and integration tests for the interpreter, compiler, IR validation and DSP, run through CTest. BSL-1.0 licence.</td></tr>
+              <tr><td>Valgrind</td><td>Memcheck over the test suite and offline renders, for leaks and invalid memory access. Too slow for real-time runs.</td></tr>
+              <tr><td>CMake</td><td>Build system, supported by JUCE.</td></tr>
+              <tr><td>PipeWire, <code>pw-top</code></td><td>Audio server on most Linux desktops. The <code>ERR</code> column of <code>pw-top</code> reports xruns for the performance criterion.</td></tr>
+              <tr><td><code>gh</code></td><td>GitHub CLI for the repository and releases.</td></tr>
+              <tr><td>Doxygen, Sphinx, Breathe</td><td>C++ API reference, user guide and language reference. Breathe imports Doxygen output into Sphinx.</td></tr>
+              <tr><td>Vercel</td><td>Hosting for the data directory and this page.</td></tr>
+              <tr><td>Supabase</td><td>Postgres for directory entries, saved entries and hashed tokens, with row-level security. Free projects pause after a week without database activity; a daily scheduled query keeps the project active.</td></tr>
+              <tr><td>Clerk</td><td>Sign-in for the directory.</td></tr>
+              <tr><td>Claude Code</td><td>Implementation of the engine, tooling and directory against the language specification.</td></tr>
+              <tr><td>Supabase MCP</td><td>Schema, migrations and access rules for the directory.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="scope">
+    <div class="wrap">
+      <div class="rule-graduated" aria-hidden="true"></div>
+      <div class="band-head">
+        <p class="band-num tabular" aria-hidden="true">07</p>
+        <h2 id="scope">Out of scope</h2>
+      </div>
+      <div class="prose">
+        <ul>
+              <li>Hosting third-party plugins</li>
+              <li>Windows and macOS</li>
+              <li>Visual editing</li>
+              <li>Accounts in the native app</li>
+              <li>Cloud sync of projects</li>
+            </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Project proposal for MPCS 51238, Design, Build, Ship, Autumn 2026. University of Chicago.</span>
+  </div>
+</footer>
+
+</body>
+</html>
